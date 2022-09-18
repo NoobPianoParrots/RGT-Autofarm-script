@@ -1,0 +1,95 @@
+local MessageBox = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/NotificationGUI/main/source.lua"))()
+
+
+--[[
+   MessageBoxIcons:
+      • Question
+      • Error
+      • Warning
+
+   MessageBoxButtons:
+      • YesNo
+      • OKCancel
+      • OK
+--]]
+-- AnchorPoint is 0.5,0.5
+MessageBox.Show({Position = UDim2.new(0.5,0,0.5,0), Text = "Credits", Description = "Made By ParrotPianoGuy#7546\n There Will be Updates on this script\n \nDo you like this?", MessageBoxIcon = "Warning", MessageBoxButtons = "YesNo", Result = function(res)
+   if (res == "Yes") then
+       MessageBox.Show({MessageBoxButtons = "OK", Description = "Wow, you said Yes! Thank you", Text = "YAYYY!"})
+   elseif (res == "No") then
+       MessageBox.Show({MessageBoxButtons = "OK", Description = "Ahh, sorry to dissapoint, I'll try better next time!", Text = "Nooooo"})
+   end
+end})
+
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Patskorn/GUI/main/Copy-SynapOver.lua"))()
+
+local GUI = library:new("RGT AutoFarm","Early Access Version")
+local Tab1 = GUI:Tap("Main")
+
+Tab1:Button("Bypass Chat *USE ON YOUR ALT OR RISK IT*",function()
+local args = {
+    [1] = "huge \209\129\226\129\165\226\129\165\208\190\226\129\165\209\129k \209\149\208\181\226\129\165\226\129\165\209\133 club r\226\129\165\226\129\165\208\176p\226\129\165\226\129\165\208\181 \226\129\165\226\129\165\209\128\226\129\165\226\129\165\208\190r\226\129\165\226\129\165n\226\129\165\226\129\165",
+    [2] = "All"
+}
+
+game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+
+end)
+
+Tab1:Toggle("AutoFarm Raps",nil,function(value)
+    local Points = { Vector3.new(78, 136, -555), Vector3.new(-25, 140, -564), Vector3.new(43, 105, -569), Vector3.new(-37, 110, -418), Vector3.new(51, 109, -241), Vector3.new(87, 111, -187), Vector3.new(178, 121, -235), Vector3.new(196, 120, -204), Vector3.new(141, 97, -230), Vector3.new(141, 128, -231), Vector3.new(140, 152, -232), Vector3.new(139, 251, -234), Vector3.new(-24, 305, -507), Vector3.new(210, 193, -794), Vector3.new(438, 165, -846), Vector3.new(459, 160, -852), Vector3.new(370, 150, -725), Vector3.new(210, 96, -777) }
+
+local Player = game:GetService("Players").LocalPlayer
+local Char = Player.Character or Player.CharacterAdded:Wait()
+local Root = Char:WaitForChild("HumanoidRootPart")
+
+local function teleportToPoint(vec3, speed)
+    local bV = Instance.new("BodyVelocity")
+    bV.Velocity, bV.MaxForce = Vector3.new(), Vector3.new(9e9, 9e9, 9e9); bV.Parent = Root
+
+    local reached = false
+    local connection = game:GetService("RunService").Stepped:Connect(function(_, step)
+        local diff = vec3 - Root.Position
+        Root.CFrame = CFrame.new(Root.Position + diff.Unit * math.min(speed * step, diff.Magnitude))
+        
+        if (Vector3.new(vec3.X, 0, vec3.Z) - Vector3.new(Root.Position.X, 0, Root.Position.Z)).Magnitude < 0.1 then
+            Root.CFrame = CFrame.new(vec3)
+            
+            reached = true
+        end
+    end)
+
+    repeat task.wait() until reached
+
+    connection:Disconnect()
+    bV:Destroy()
+end
+
+for _, v in next, Points do
+    teleportToPoint(v, 25)
+end
+
+end)
+
+Tab1:Line()
+
+Tab1:Dropdown("Bug Fixes",{"Enable Noclip And AntiSit"},function(t)
+    local RunService = game:GetService("RunService")
+function antiSit()
+if game.Players.LocalPlayer.Character.Humanoid:GetState() == Enum.HumanoidStateType.Seated then 
+game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end
+end
+RunService:BindToRenderStep("tempBinding", 1000, antiSit)
+end)
+
+
+
+Tab1:TextBox("Buy Tools *W.I.P*, *TESTING*",function(value)
+local args = {
+    [1] = "heartTag"
+}
+
+game:GetService("ReplicatedStorage").Remotes.ShopRemotes.BuyItem:FireServer(unpack(args))
+
+end)
